@@ -4,13 +4,14 @@ class TestsController < ApplicationController
   # GET /tests
   def index
     @tests = Test.all
-
+    
     render json: @tests
   end
 
   # GET /tests/1
   def show
     render json: @test
+    
   end
 
   # POST /tests
@@ -48,4 +49,5 @@ class TestsController < ApplicationController
     def test_params
         params.permit(:test)
     end
+    
 end
