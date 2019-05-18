@@ -1,2 +1,4 @@
 # users-ms
-user component 
+user component
+Lenguaje: Ruby
+Framework: Rails 
