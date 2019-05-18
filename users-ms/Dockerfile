@@ -1,12 +1,12 @@
-FROM ruby:2.5
+FROM ruby:2.6.3
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 RUN mkdir /users-ms
 WORKDIR /users-ms
-COPY Gemfile /users-ms/Gemfile
-COPY Gemfile.lock /users-ms/Gemfile.lock
+COPY Gemfile ../users-ms/Gemfile
+COPY Gemfile.lock ../users-ms/Gemfile.lock
 RUN gem install rails
 RUN bundle install
-COPY . /users-ms
+COPY . ../users-ms
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
