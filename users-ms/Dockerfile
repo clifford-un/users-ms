@@ -8,6 +8,8 @@ VOLUME /usr/src/app
 WORKDIR /usr/src/app
 
 COPY Gemfile Gemfile
+# https://github.com/moby/moby/issues/37965#issuecomment-426853382
+RUN true
 COPY Gemfile.lock /users-ms/Gemfile.lock
 RUN gem install rails
 RUN bundle install

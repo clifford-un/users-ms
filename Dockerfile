@@ -3,6 +3,8 @@ RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 RUN mkdir /myapp
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
+# https://github.com/moby/moby/issues/37965#issuecomment-426853382
+RUN true
 COPY Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install
 COPY . /myapp
