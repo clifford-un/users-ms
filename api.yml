@@ -29,10 +29,6 @@ paths:
       responses:
         '201':
           description: Created
-        '400':
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorModel'
         '500':
           description: Internal Server Error
           schema:
@@ -45,10 +41,6 @@ paths:
           description: Ok
           schema:
             $ref: '#/definitions/User'
-        '406':
-          description: Not Acceptable (Invalid Params)
-          schema:
-            $ref: '#/definitions/ErrorModel'
         '500':
           description: Internal Server Error
           schema:
@@ -83,10 +75,6 @@ paths:
           description: Ok
           schema:
             $ref: '#/definitions/Test'
-        '406':
-          description: Not Acceptable (Invalid Params)
-          schema:
-            $ref: '#/definitions/ErrorModel'
         '500':
           description: Internal Server Error
           schema:
@@ -116,10 +104,6 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/ErrorModel'
-        '406':
-            description: Not Acceptable (Invalid Params)
-            schema:
-              $ref: '#/definitions/ErrorModel'
         '500':
           description: unexpected error
           schema:
@@ -141,10 +125,6 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/ErrorModel'
-        '406':
-            description: Not Acceptable (Invalid Params)
-            schema:
-              $ref: '#/definitions/ErrorModel'
         '500':
           description: unexpected error
           schema:
