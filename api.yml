@@ -1,0 +1,196 @@
+#Test with: http://editor.swagger.io/
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Microservice for Users
+  description: Ruby + Postgresql
+  license:
+    name: Kiwi Platform
+host: 192.168.99.101:3000
+basePath: /users-ms/resources
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /users:
+    post:
+      summary: Creates a new user
+      operationId: createUser
+      parameters:
+        - name: user
+          in: body
+          required: true
+          description: User Object
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: Created
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    get:
+      summary: Returns all users
+      operationId: allUsers
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/User'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /tests:
+    post:
+      summary: Creates a new test
+      operationId: createTest
+      parameters:
+        - name: test
+          in: body
+          required: true
+          description: test Object
+          schema:
+            $ref: '#/definitions/TestInput'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    get:
+      summary: Returns all tests
+      operationId: allTests
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Test'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    
+    
+  /users/{id}:
+    put:
+      summary: Updates a user with the given id
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: The id of the user to be updated
+          required: true
+          type: integer
+        - name: user
+          in: body
+          required: true
+          description: User Object
+          schema:
+            $ref: '#/definitions/UserInput'
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+    delete:
+      summary: Deletes a user with the given id
+      operationId: deleteCourse
+      parameters:
+        - name: id
+          in: path
+          description: The id of the user to be deleted
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+definitions:
+
+  # Users
+  User:
+    type: object
+    properties:
+      user_name:
+        type: string
+      password:
+        type: string  
+      e-mail:
+        type: string
+      phone_number:
+        type: integer
+      last_connection:
+        type: string
+      temp:
+        type: boolean
+        
+        
+
+  UserInput:
+    type: object
+    properties:
+      user_name:
+        type: string
+      password:
+        type: string  
+      e-mail:
+        type: string
+      phone_number:
+        type: integer
+      last_connection:
+        type: string
+      temp:
+        type: boolean
+        
+  Test:
+    type: object
+    properties:
+      test:
+        type: string
+      
+
+  TestInput:
+    type: object
+    properties:
+      test:
+        type: string
+  
+
+# Errors
+  ErrorModel:
+    type: object
+    required:
+      - message
+      - code
+    properties:
+      message:
+        type: string
+      code:
+        type: number
+      description:
+        type: object
