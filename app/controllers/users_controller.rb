@@ -3,14 +3,13 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.all
-
+    @users = User.getProtectedUsers()
     render json: @users
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: UserSerializer.new(@user)
   end
 
   # POST /users

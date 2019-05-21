@@ -8,9 +8,17 @@ class FriendsController < ApplicationController
     render json: @friends
   end
 
+  #GET /see_friends/1
+  def get_friends
+    @friends = Friend.getFriendList(params[:id])
+    render json: @friends
+  end
+  
+  
   # GET /friends/1
   def show
-    render json: @friend
+
+    render json: FriendSerializer.new(@friend)
   end
 
   # POST /friends
@@ -46,6 +54,6 @@ class FriendsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def friend_params
-      params.require(:friend).permit(:user_id1, :user_id2)
+      params.permit(:user_id1, :user_id2)
     end
 end
