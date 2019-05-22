@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-    attributes :user_name, :e_mail, :last_connection, :friends
+    attributes :id, :user_name, :e_mail, :last_connection, :friends
 
     def friends
         ret=[] 
