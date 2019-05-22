@@ -1,4 +1,4 @@
-#Test with: http://editor.swagger.io/
+# http://editor.swagger.io/
 swagger: '2.0'
 info:
   version: 1.0.0
@@ -15,6 +15,7 @@ consumes:
 produces:
   - application/json
 paths:
+  #---------USERS-------------
   /users:
     post:
       summary: Creates a new user
@@ -29,6 +30,10 @@ paths:
       responses:
         '201':
           description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
         '500':
           description: Internal Server Error
           schema:
@@ -40,48 +45,40 @@ paths:
         '200':
           description: Ok
           schema:
-            $ref: '#/definitions/User'
-        '500':
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorModel'
-  /tests:
-    post:
-      summary: Creates a new test
-      operationId: createTest
-      parameters:
-        - name: test
-          in: body
-          required: true
-          description: test Object
-          schema:
-            $ref: '#/definitions/TestInput'
-      responses:
-        '201':
-          description: Created
-        '400':
-          description: Bad Request
+            $ref: '#/definitions/Protected_User'
+        '406':
+          description: Not Acceptable (Invalid Params)
           schema:
             $ref: '#/definitions/ErrorModel'
         '500':
           description: Internal Server Error
           schema:
             $ref: '#/definitions/ErrorModel'
+  
+  /users/{id}:
     get:
-      summary: Returns all tests
-      operationId: allTests
+      summary: Returns the user with the given id
+      operationId: userById
+      parameters:
+        - name: id
+          in: path
+          description: The id of the user to be retrieved
+          required: true
+          type: integer
       responses:
         '200':
           description: Ok
           schema:
-            $ref: '#/definitions/Test'
+            $ref: '#/definitions/Protected_User'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
         '500':
           description: Internal Server Error
           schema:
             $ref: '#/definitions/ErrorModel'
-    
-    
-  /users/{id}:
+            
     put:
       summary: Updates a user with the given id
       operationId: updateUser
@@ -104,6 +101,10 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
         '500':
           description: unexpected error
           schema:
@@ -125,31 +126,137 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
         '500':
           description: unexpected error
           schema:
             $ref: '#/definitions/ErrorModel'
 
+  #-----------FRIENDS-------------
+  /friends:
+    get:
+      summary: Returns all friendship relationships
+      operationId: allFriends
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Friend'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    post:
+      summary: Creates a new friendship relashionship
+      operationId: createFriend
+      parameters:
+        - name: test
+          in: body
+          required: true
+          description: test Object
+          schema:
+            $ref: '#/definitions/FriendInput'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  
+  /see_friends/?id={id}:
+    get:
+      summary: Returns the friends of a user with the given id
+      operationId: friendsById
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Protected_User'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    
+  #-----------TESTS--------------
+  /tests:
+    get:
+      summary: Returns all tests as a 'ping' for GET
+      operationId: allTests
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Test'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    post:
+      summary: Creates a new test entity that works as a 'ping' for POST
+      operationId: createTest
+      parameters:
+        - name: test
+          in: body
+          required: true
+          description: test Object
+          schema:
+            $ref: '#/definitions/TestInput'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    
+    
+  
 definitions:
 
   # Users
+  Protected_User:
+    type: object
+    properties:
+      id:
+        type: integer
+      user_name:
+        type: string
+      e-mail:
+        type: string
+      
+      
+  
   User:
     type: object
     properties:
-      user_name:
-        type: string
-      password:
-        type: string  
-      e-mail:
-        type: string
-      phone_number:
-        type: integer
-      last_connection:
-        type: string
-      temp:
-        type: boolean
+        user:
+          type: Protected_User
         
-        
+    
 
   UserInput:
     type: object
@@ -166,7 +273,27 @@ definitions:
         type: string
       temp:
         type: boolean
-        
+  
+  #Friends
+  
+  Friend:
+    type: object
+    properties:
+      user_id1:
+        type: integer
+      user_id2:
+        type: integer
+  
+  FriendInput:
+    type: object
+    properties:
+      user_id1:
+        type: integer
+      user_id2:
+        type: integer
+  
+  
+  #Tests      
   Test:
     type: object
     properties:
