@@ -6,5 +6,11 @@ class CreateFriends < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+    create_table :friend_request do |t|
+      t.integer :user_id1
+      t.integer :user_id2
+
+      t.timestamps
+    end
   end
 end

@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-    attributes :id, :user_name, :e_mail, :last_connection, :friends
+    attributes :id, :user_name, :e_mail, :last_connection, :friends, :request_number, :friend_requests
 
     def friends
         ret=[] 
@@ -14,4 +14,13 @@ class UserSerializer < ActiveModel::Serializer
         end
         return ret
     end
+
+    def request_number
+        return FriendRequest.where("user_id_to = ?",object.id).count
+    end
+
+    def friend_requests
+        return User.getRequestList(object.id) 
+    end
+
 end
