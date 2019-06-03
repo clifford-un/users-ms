@@ -24,4 +24,20 @@ class User < ApplicationRecord
 
         return ret
     end
+
+    def self.getRequestList(id)
+        users_to = FriendRequest.where(" user_id_from = ?",id)
+        users_from = FriendRequest.where("user_id_to = ?",id)
+        request_list=[]
+        to=[]
+        from=[]
+        users_to.each do |user|
+            to.push(User.getUserNameById(user.user_id_to))
+        end
+        users_from.each do |user|
+            from.push(User.getUserNameById(user.user_id_from))
+        end
+        request_list.push(to)
+        request_list.push(from)
+    end
 end
