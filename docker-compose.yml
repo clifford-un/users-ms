@@ -11,6 +11,8 @@ services:
       - user-db
     environment:
       - POSTGRES_HOST=user-db
+      - LDAP_HOST=192.168.99.101
+      - LDAP_PORT=389
   user-db:
     image: postgres
     volumes:

@@ -17,6 +17,23 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+
+      ldap = Net::LDAP.new
+      ldap.host = ENV['LDAP_HOST']
+      ldap.port = ENV['LDAP_PORT']
+      ldap.authenticate {"cn=admin, dc=kwii, dc=unal, dc=edu, dc=co", "admin"}
+
+      ldap.bind       
+
+      dn = "cn=admin, dc=kwii, dc=unal, dc=edu, dc=co"
+      attr = {
+        :cn => "#{@user.user_name}",
+        :objectclass => "User",
+        :mail => "#{@user.e_mail}"
+      }
+      ldap.add(:dn => dn, :attributes => attr)
+      
+
       render json: @user, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
